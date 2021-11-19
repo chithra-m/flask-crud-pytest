@@ -1,21 +1,26 @@
 from flaskapp import app,request
-from crud import read_all , update_task , create_task , delete_task
+from services import gettaskall,gettaskid,posttask,puttask,deletetask
+from model import Tasks
 
-@app.route('/')
-def index():
-    return read_all()
+@app.route('/task',methods=['GET'])
+def read_task_all():
+    return gettaskall()
 
-@app.route('/insert', methods = ['POST'])
-def insert () :
-    return create_task()
+@app.route('/task/<taskid>',methods=['GET'])
+def read_task_id(taskid):
+   return gettaskid(taskid)
 
-@app.route('/update', methods = ['GET', 'POST'])
-def update():
-    return update_task()
+@app.route('/task',methods=['POST'])
+def insert_task():
+    return posttask(request.data)
 
-@app.route('/delete/<taskid>/', methods = ['GET', 'POST'])
-def delete(taskid):
-    return delete_task(taskid)
+@app.route('/task',methods=['PUT'])
+def update_task():
+    return puttask(request.data)
+
+@app.route('/task/<taskid>',methods=['DELETE'])
+def delete_task(taskid):
+    return deletetask(taskid)
 
 if __name__ == "__main__":
     app.run(debug=True)
